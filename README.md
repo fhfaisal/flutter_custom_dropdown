@@ -7,16 +7,16 @@ Supports **BottomSheet**, **Dialog**, and **Overlay** presentation modes, async 
 
 ## Features
 
-- 🔍 **Built-in search** with 300 ms debounce
-- 🎨 **Three display modes** — BottomSheet, Dialog, Overlay
-- 🧩 **Fully generic** `<T>` — use any model class, not just strings
-- ⚡ **Async items** — load from API / database on every keystroke
-- 🖌️ **Custom item builder** — replace the default tile with any widget
-- ✅ **Form-field compatible** — `validator` + `autovalidateMode` support
-- 🕹️ **Programmatic control** — open, close, or clear from code
-- 🧹 **Clear button** — clears both the text field and the internal selection state
-- 💅 **Fully themeable** — `DropdownStyle` covers every visual detail
-- 📦 **Zero external dependencies**
+-  **Built-in search** with 300 ms debounce
+-  **Three display modes** — BottomSheet, Dialog, Overlay
+-  **Fully generic** `<T>` — use any model class, not just strings
+-  **Async items** — load from API / database on every keystroke
+-  **Custom item builder** — replace the default tile with any widget
+-  **Form-field compatible** — `validator` + `autovalidateMode` support
+-  **Programmatic control** — open, close, or clear from code
+-  **Clear button** — clears both the text field and the internal selection state
+-  **Fully themeable** — `DropdownStyle` covers every visual detail
+-  **Zero external dependencies**
 
 ---
 
