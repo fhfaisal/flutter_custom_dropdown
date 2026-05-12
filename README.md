@@ -1,4 +1,4 @@
-# flutter_custom_dropdown
+# custom_dropdown_pro
 
 A highly customizable, fully generic, searchable dropdown field for Flutter.  
 Supports **BottomSheet**, **Dialog**, and **Overlay** presentation modes, async data loading, custom item builders, form validation, and programmatic control — all with zero external dependencies.
@@ -26,7 +26,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_custom_dropdown: ^0.0.1
+  custom_dropdown_pro: ^0.0.4
 ```
 
 Then run:
@@ -40,7 +40,7 @@ flutter pub get
 ## Quick Start
 
 ```dart
-import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
+import 'package:custom_dropdown_pro/custom_dropdown_pro.dart';
 ```
 
 ```dart

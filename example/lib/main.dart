@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
+import 'package:custom_dropdown_pro/custom_dropdown_pro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SearchableDropdown Examples',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
       home: const ExamplesHomePage(),
     );
   }
@@ -92,26 +89,26 @@ class Country {
 // ---------------------------------------------------------------------------
 
 const _countries = [
-  Country(id: 1,  name: 'Bangladesh',   flag: '🇧🇩'),
-  Country(id: 2,  name: 'Brazil',       flag: '🇧🇷'),
-  Country(id: 3,  name: 'Canada',       flag: '🇨🇦'),
-  Country(id: 4,  name: 'China',        flag: '🇨🇳'),
-  Country(id: 5,  name: 'Egypt',        flag: '🇪🇬'),
-  Country(id: 6,  name: 'France',       flag: '🇫🇷'),
-  Country(id: 7,  name: 'Germany',      flag: '🇩🇪'),
-  Country(id: 8,  name: 'India',        flag: '🇮🇳'),
-  Country(id: 9,  name: 'Indonesia',    flag: '🇮🇩'),
-  Country(id: 10, name: 'Italy',        flag: '🇮🇹'),
-  Country(id: 11, name: 'Japan',        flag: '🇯🇵'),
-  Country(id: 12, name: 'Mexico',       flag: '🇲🇽'),
-  Country(id: 13, name: 'Nigeria',      flag: '🇳🇬'),
-  Country(id: 14, name: 'Pakistan',     flag: '🇵🇰'),
-  Country(id: 15, name: 'Russia',       flag: '🇷🇺'),
+  Country(id: 1, name: 'Bangladesh', flag: '🇧🇩'),
+  Country(id: 2, name: 'Brazil', flag: '🇧🇷'),
+  Country(id: 3, name: 'Canada', flag: '🇨🇦'),
+  Country(id: 4, name: 'China', flag: '🇨🇳'),
+  Country(id: 5, name: 'Egypt', flag: '🇪🇬'),
+  Country(id: 6, name: 'France', flag: '🇫🇷'),
+  Country(id: 7, name: 'Germany', flag: '🇩🇪'),
+  Country(id: 8, name: 'India', flag: '🇮🇳'),
+  Country(id: 9, name: 'Indonesia', flag: '🇮🇩'),
+  Country(id: 10, name: 'Italy', flag: '🇮🇹'),
+  Country(id: 11, name: 'Japan', flag: '🇯🇵'),
+  Country(id: 12, name: 'Mexico', flag: '🇲🇽'),
+  Country(id: 13, name: 'Nigeria', flag: '🇳🇬'),
+  Country(id: 14, name: 'Pakistan', flag: '🇵🇰'),
+  Country(id: 15, name: 'Russia', flag: '🇷🇺'),
   Country(id: 16, name: 'Saudi Arabia', flag: '🇸🇦'),
   Country(id: 17, name: 'South Africa', flag: '🇿🇦'),
-  Country(id: 18, name: 'South Korea',  flag: '🇰🇷'),
-  Country(id: 19, name: 'Turkey',       flag: '🇹🇷'),
-  Country(id: 20, name: 'United States',flag: '🇺🇸'),
+  Country(id: 18, name: 'South Korea', flag: '🇰🇷'),
+  Country(id: 19, name: 'Turkey', flag: '🇹🇷'),
+  Country(id: 20, name: 'United States', flag: '🇺🇸'),
 ];
 
 // ---------------------------------------------------------------------------
@@ -139,7 +136,10 @@ class SelectedResult extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('Selected: ', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Selected: ',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Expanded(child: Text(text)),
         ],
       ),
@@ -472,7 +472,7 @@ class _CustomItemBuilderExampleState extends State<CustomItemBuilderExample> {
 
 /// Use [asyncItems] when items come from an API or database.
 /// The callback receives the current search query and must return a
-/// Future<List<T>>. The widget shows a loading indicator automatically.
+/// `Future<List<T>>`. The widget shows a loading indicator automatically.
 class AsyncItemsExample extends StatefulWidget {
   const AsyncItemsExample({super.key});
 
@@ -493,9 +493,7 @@ class _AsyncItemsExampleState extends State<AsyncItemsExample> {
     await Future.delayed(const Duration(milliseconds: 600)); // fake latency
     if (query.isEmpty) return _countries;
     return _countries
-        .where(
-          (c) => c.name.toLowerCase().contains(query.toLowerCase()),
-        )
+        .where((c) => c.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 
@@ -581,9 +579,9 @@ class _NoSearchNoClearExampleState extends State<NoSearchNoClearExample> {
               textController: _textController,
               compareFn: (a, b) => a.id == b.id,
               behavior: const DropdownBehavior(
-                enableSearch: false,   // hides the search field
-                clearable: false,      // hides the ✕ button on the text field
-                closeOnSelect: true,   // default: closes sheet on pick
+                enableSearch: false, // hides the search field
+                clearable: false, // hides the ✕ button on the text field
+                closeOnSelect: true, // default: closes sheet on pick
                 autofocusSearch: true, // default: focuses search on open
               ),
               onSelected: (country) {
@@ -648,7 +646,10 @@ class _CustomStyleExampleState extends State<CustomStyleExample> {
                 // Background color of the sheet.
                 backgroundColor: const Color(0xFF1C1B2E),
                 // Text style for each item row.
-                itemTextStyle: const TextStyle(color: Colors.white, fontSize: 15),
+                itemTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
                 // Title at the top of the sheet ("Select Item").
                 titleStyle: const TextStyle(
                   color: Colors.white70,
@@ -678,7 +679,10 @@ class _CustomStyleExampleState extends State<CustomStyleExample> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  suffixIcon: const Icon(Icons.expand_more, color: Colors.white38),
+                  suffixIcon: const Icon(
+                    Icons.expand_more,
+                    color: Colors.white38,
+                  ),
                 ),
               ),
             ),
@@ -747,10 +751,9 @@ class _FormValidationExampleState extends State<FormValidationExample> {
                   debugPrint(_selected!.toMap().toString());
                 },
                 // Provide a validator just like any TextFormField.
-                validator: (value) =>
-                    (value == null || value.isEmpty)
-                        ? 'Please select a country'
-                        : null,
+                validator: (value) => (value == null || value.isEmpty)
+                    ? 'Please select a country'
+                    : null,
                 // Show errors immediately when the user leaves the field.
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),

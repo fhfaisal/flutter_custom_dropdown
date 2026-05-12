@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `flutter_custom_dropdown` will be documented in this file.
+All notable changes to `custom_dropdown_pro` will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Bug fixes & publish fixes
 
-- **[FIX] Library filename mismatch** — Renamed `lib/searchable_dropdown.dart` → `lib/flutter_custom_dropdown.dart` and updated the `library` declaration to `flutter_custom_dropdown` so the primary library name matches the package name, as required by pub.dev.
+- **[FIX] Library filename mismatch** — Renamed the primary library entrypoint to match the published package name and updated the `library` declaration accordingly, as required by pub.dev.
 - **[FIX] Missing `repository` field** — Added `repository` URL to `pubspec.yaml`.
 - **[FIX] Improved package description** — Expanded description to meet pub.dev length guidelines.
 - **[BUMP] Version** — Incremented to `0.0.4` to supersede the previously published `0.0.3`.

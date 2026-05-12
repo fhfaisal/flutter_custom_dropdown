@@ -1,5 +1,3 @@
-library searchable_dropdown;
-
 export 'src/widgets/searchable_dropdown_field.dart';
 
 export 'src/core/dropdown_controller.dart';
