@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## 0.0.4 — 2026-05-12
+
+### Bug fixes & publish fixes
+
+- **[FIX] Library filename mismatch** — Renamed `lib/searchable_dropdown.dart` → `lib/flutter_custom_dropdown.dart` and updated the `library` declaration to `flutter_custom_dropdown` so the primary library name matches the package name, as required by pub.dev.
+- **[FIX] Missing `repository` field** — Added `repository` URL to `pubspec.yaml`.
+- **[FIX] Improved package description** — Expanded description to meet pub.dev length guidelines.
+- **[BUMP] Version** — Incremented to `0.0.4` to supersede the previously published `0.0.3`.
+
+---
+
 ## 0.0.1 — 2026-05-12
 
 ### Initial release

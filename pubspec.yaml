@@ -1,7 +1,7 @@
 name: flutter_custom_dropdown
-description: "A customizable searchable dropdown for Flutter."
-version: 0.0.1
-homepage:
+description: "A highly customizable, fully generic, searchable dropdown for Flutter. Supports BottomSheet, Dialog, and Overlay modes, async loading, custom builders, form validation, and programmatic control."
+version: 0.0.4
+repository: https://github.com/faisalhasan/flutter_custom_dropdown
 
 environment:
   sdk: ^3.9.2

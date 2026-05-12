@@ -40,7 +40,7 @@ flutter pub get
 ## Quick Start
 
 ```dart
-import 'package:flutter_custom_dropdown/searchable_dropdown.dart';
+import 'package:flutter_custom_dropdown/flutter_custom_dropdown.dart';
 ```
 
 ```dart
