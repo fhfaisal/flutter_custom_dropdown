@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs
+
 class DropdownState<T> {
+
   final List<T> filteredItems;
 
   final bool loading;

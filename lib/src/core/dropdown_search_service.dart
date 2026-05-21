@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs
+
 class DropdownSearchService<T> {
+
   List<T> filter({
     required List<T> items,
     required String query,

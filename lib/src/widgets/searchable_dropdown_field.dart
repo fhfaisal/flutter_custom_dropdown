@@ -9,45 +9,66 @@ import 'dropdown_bottom_sheet.dart';
 import 'dropdown_dialog.dart';
 import 'dropdown_overlay.dart';
 
+/// A read-only form field that opens a searchable dropdown selector.
 class SearchableDropdownField<T> extends StatefulWidget {
+  /// The initial list of items available for selection.
   final List<T> items;
 
+  /// The item currently selected when the field is first built.
   final T? selectedItem;
 
+  /// Converts an item into the text displayed to the user.
   final ItemLabel<T> itemLabel;
 
+  /// Custom equality check for complex item types.
   final CompareFn<T>? compareFn;
 
+  /// Optional custom builder for each item row.
   final ItemBuilder<T>? itemBuilder;
 
+  /// Async source used to fetch items for the current query.
   final Future<List<T>> Function(String query)? asyncItems;
 
+  /// Called after the user selects an item.
   final void Function(T item) onSelected;
 
+  /// Called after the user clears the current value.
   final VoidCallback? onClear;
 
+  /// Optional controller for opening, closing, and clearing programmatically.
   final SearchableDropdownController<T>? controller;
 
+  /// Visual style configuration for the field and dropdown.
   final DropdownStyle style;
 
+  /// Interaction flags that control search, clear, and close behavior.
   final DropdownBehavior behavior;
 
+  /// Determines whether the dropdown opens as a sheet, dialog, or overlay.
   final DropdownMode mode;
 
+  /// Builder shown when there are no matching items.
   final WidgetBuilder? emptyBuilder;
 
+  /// Builder shown while async items are loading.
   final WidgetBuilder? loadingBuilder;
 
+  /// Standard form validator for the field text.
   final FormFieldValidator<String>? validator;
 
+  /// Controls when validation messages are shown.
   final AutovalidateMode? autovalidateMode;
 
+  /// Whether the field can be interacted with.
   final bool enabled;
 
+  /// Placeholder text shown when no item is selected.
   final String hintText;
 
+  /// Controller holding the selected label text displayed in the field.
   final TextEditingController textController;
 
+  /// Creates a searchable dropdown field.
   const SearchableDropdownField({
     super.key,
     required this.items,
@@ -72,10 +93,12 @@ class SearchableDropdownField<T> extends StatefulWidget {
   });
 
   @override
-  State<SearchableDropdownField<T>> createState() => _SearchableDropdownFieldState<T>();
+  State<SearchableDropdownField<T>> createState() =>
+      _SearchableDropdownFieldState<T>();
 }
 
-class _SearchableDropdownFieldState<T> extends State<SearchableDropdownField<T>> {
+class _SearchableDropdownFieldState<T>
+    extends State<SearchableDropdownField<T>> {
   late final SearchableDropdownController<T> _controller;
 
   final LayerLink _layerLink = LayerLink();
@@ -88,7 +111,11 @@ class _SearchableDropdownFieldState<T> extends State<SearchableDropdownField<T>>
 
     _controller = widget.controller ?? SearchableDropdownController<T>();
 
-    _controller.attach(open: _openDropdown, close: _closeDropdown, clear: _clearSelection);
+    _controller.attach(
+      open: _openDropdown,
+      close: _closeDropdown,
+      clear: _clearSelection,
+    );
   }
 
   @override
@@ -186,7 +213,10 @@ class _SearchableDropdownFieldState<T> extends State<SearchableDropdownField<T>>
           suffixIcon: widget.textController.text.isEmpty
               ? const Icon(Icons.keyboard_arrow_down_rounded)
               : widget.behavior.clearable
-              ? IconButton(icon: const Icon(Icons.close), onPressed: _clearSelection)
+              ? IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: _clearSelection,
+                )
               : null,
         );
 

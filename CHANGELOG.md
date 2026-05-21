@@ -5,6 +5,10 @@ All notable changes to `custom_dropdown_pro` will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## 0.0.6 — 2026-05-21
+- **[FEAT] Documentation & Quality bump** — 100% of exported public API elements now fully documented to satisfy pub.dev publishing guidelines.
+- **[FIX] Lint improvements** — Enabled `public_member_api_docs` lint across the package and verified clean analysis.
+
 ## 0.0.5 — 2026-05-12
 * Fixed repository link in pubspec.
 

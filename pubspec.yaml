@@ -1,6 +1,6 @@
 name: custom_dropdown_pro
-description: "A highly customizable, fully generic, searchable dropdown for Flutter. Supports BottomSheet, Dialog, and Overlay modes, async loading, custom builders, form validation, and programmatic control."
-version: 0.0.5
+description: "A searchable, customizable Flutter dropdown with bottom sheet, dialog, and overlay modes."
+version: 0.0.6
 repository: https://github.com/fhfaisal/flutter_custom_dropdown
 
 environment:

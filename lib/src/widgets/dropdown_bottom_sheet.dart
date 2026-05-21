@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
+
 
 import '../core/debounce.dart';
 import '../core/dropdown_behavior.dart';
@@ -11,8 +14,7 @@ import '../core/typedefs.dart';
 import 'dropdown_list.dart';
 import 'dropdown_search_field.dart';
 
-class DropdownBottomSheet<T>
-    extends StatefulWidget {
+class DropdownBottomSheet<T> extends StatefulWidget {
   final List<T> items;
 
   final T? selectedItem;
@@ -23,8 +25,7 @@ class DropdownBottomSheet<T>
 
   final ItemBuilder<T>? itemBuilder;
 
-  final Future<List<T>> Function(String query)?
-  asyncItems;
+  final Future<List<T>> Function(String query)? asyncItems;
 
   final void Function(T item) onSelected;
 
@@ -32,8 +33,7 @@ class DropdownBottomSheet<T>
 
   final DropdownBehavior behavior;
 
-  final SearchableDropdownController<T>
-  controller;
+  final SearchableDropdownController<T> controller;
 
   final WidgetBuilder? emptyBuilder;
 
@@ -63,48 +63,34 @@ class DropdownBottomSheet<T>
   });
 
   @override
-  State<DropdownBottomSheet<T>> createState() =>
-      _DropdownBottomSheetState<T>();
+  State<DropdownBottomSheet<T>> createState() => _DropdownBottomSheetState<T>();
 }
 
-class _DropdownBottomSheetState<T>
-    extends State<DropdownBottomSheet<T>> {
-  final TextEditingController
-  _searchController =
-  TextEditingController();
+class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
+  final TextEditingController _searchController = TextEditingController();
 
   late final Debouncer _debouncer;
 
-  late final DropdownSearchService<T>
-  _searchService;
+  late final DropdownSearchService<T> _searchService;
 
   @override
   void initState() {
     super.initState();
 
-    _debouncer = Debouncer(
-      const Duration(milliseconds: 300),
-    );
+    _debouncer = Debouncer(const Duration(milliseconds: 300));
 
-    _searchService =
-        DropdownSearchService<T>();
+    _searchService = DropdownSearchService<T>();
 
-    widget.controller.updateItems(
-      widget.items,
-    );
+    widget.controller.updateItems(widget.items);
 
-    _searchController.addListener(
-      _onSearch,
-    );
+    _searchController.addListener(_onSearch);
   }
 
   @override
   void dispose() {
     _debouncer.dispose();
 
-    _searchController.removeListener(
-      _onSearch,
-    );
+    _searchController.removeListener(_onSearch);
 
     _searchController.dispose();
 
@@ -113,42 +99,25 @@ class _DropdownBottomSheetState<T>
 
   void _onSearch() {
     _debouncer.run(() async {
-      final query =
-          _searchController.text;
+      final query = _searchController.text;
 
       if (widget.asyncItems != null) {
-        widget.controller.setLoading(
-          true,
-        );
+        widget.controller.setLoading(true);
 
-        final results =
-        await widget.asyncItems!(
-          query,
-        );
+        final results = await widget.asyncItems!(query);
 
         if (!mounted) return;
 
-        widget.controller.setLoading(
-          false,
-        );
+        widget.controller.setLoading(false);
 
-        widget.controller.updateItems(
-          results,
-        );
+        widget.controller.updateItems(results);
 
         return;
       }
 
-      final filtered =
-      _searchService.filter(
-        items: widget.items,
-        query: query,
-        mapper: widget.itemLabel,
-      );
+      final filtered = _searchService.filter(items: widget.items, query: query, mapper: widget.itemLabel);
 
-      widget.controller.updateItems(
-        filtered,
-      );
+      widget.controller.updateItems(filtered);
     });
   }
 
@@ -172,25 +141,13 @@ class _DropdownBottomSheetState<T>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final maxHeight =
-        MediaQuery.of(context).size.height *
-            0.85;
+    final maxHeight = MediaQuery.of(context).size.height * 0.85;
 
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: maxHeight,
-      ),
+      constraints: BoxConstraints(maxHeight: maxHeight),
       decoration: BoxDecoration(
-        color:
-        widget.style.backgroundColor ??
-            theme
-                .scaffoldBackgroundColor,
-        borderRadius:
-        BorderRadius.vertical(
-          top: Radius.circular(
-            widget.style.borderRadius,
-          ),
-        ),
+        color: widget.style.backgroundColor ?? theme.scaffoldBackgroundColor,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(widget.style.borderRadius)),
       ),
       child: Column(
         children: [
@@ -199,126 +156,57 @@ class _DropdownBottomSheetState<T>
           Container(
             width: 42,
             height: 5,
-            decoration: BoxDecoration(
-              color:
-              theme
-                  .colorScheme
-                  .outlineVariant,
-              borderRadius:
-              BorderRadius.circular(20),
-            ),
+            decoration: BoxDecoration(color: theme.colorScheme.outlineVariant, borderRadius: BorderRadius.circular(20)),
           ),
 
           const SizedBox(height: 16),
 
           Padding(
-            padding:
-            const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Text(
-              'Select Item',
-              style:
-              widget.style.titleStyle ??
-                  theme
-                      .textTheme
-                      .titleMedium,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text('Select Item', style: widget.style.titleStyle ?? theme.textTheme.titleMedium),
           ),
 
           const SizedBox(height: 16),
 
           if (widget.behavior.enableSearch)
             Padding(
-              padding:
-              const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownSearchField(
-                controller:
-                _searchController,
+                controller: _searchController,
                 style: widget.style,
-                behavior:
-                widget.behavior,
+                behavior: widget.behavior,
                 onClear: () {
-                  _searchController
-                      .clear();
+                  _searchController.clear();
                 },
               ),
             ),
 
           const SizedBox(height: 12),
 
-          Divider(
-            height: 1,
-            color:
-            theme
-                .colorScheme
-                .outlineVariant,
-          ),
+          Divider(height: 1, color: theme.colorScheme.outlineVariant),
 
           Expanded(
-            child:
-            ValueListenableBuilder<
-                DropdownState<T>
-            >(
-              valueListenable:
-              widget
-                  .controller
-                  .stateNotifier,
-              builder:
-                  (
-                  context,
-                  state,
-                  _,
-                  ) {
-                return DropdownList<
-                    T
-                >(
-                  items:
-                  state
-                      .filteredItems,
-                  selectedItem:
-                  state
-                      .selectedItem ??
-                      widget
-                          .selectedItem,
-                  itemLabel:
-                  widget
-                      .itemLabel,
-                  compareFn:
-                  widget
-                      .compareFn,
-                  itemBuilder:
-                  widget
-                      .itemBuilder,
-                  onItemSelected:
-                  _selectItem,
-                  style:
-                  widget.style,
-                  behavior:
-                  widget
-                      .behavior,
-                  loading:
-                  state.loading,
-                  emptyBuilder:
-                  widget
-                      .emptyBuilder,
-                  loadingBuilder:
-                  widget
-                      .loadingBuilder,
+            child: ValueListenableBuilder<DropdownState<T>>(
+              valueListenable: widget.controller.stateNotifier,
+              builder: (context, state, _) {
+                return DropdownList<T>(
+                  items: state.filteredItems,
+                  selectedItem: state.selectedItem ?? widget.selectedItem,
+                  itemLabel: widget.itemLabel,
+                  compareFn: widget.compareFn,
+                  itemBuilder: widget.itemBuilder,
+                  onItemSelected: _selectItem,
+                  style: widget.style,
+                  behavior: widget.behavior,
+                  loading: state.loading,
+                  emptyBuilder: widget.emptyBuilder,
+                  loadingBuilder: widget.loadingBuilder,
                 );
               },
             ),
           ),
 
-          SizedBox(
-            height:
-            MediaQuery.of(
-              context,
-            ).padding.bottom +
-                12,
-          ),
+          SizedBox(height: MediaQuery.of(context).padding.bottom + 12),
         ],
       ),
     );
