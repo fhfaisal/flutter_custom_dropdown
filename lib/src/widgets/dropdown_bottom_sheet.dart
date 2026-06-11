@@ -36,6 +36,7 @@ class DropdownBottomSheet<T> extends StatefulWidget {
   final SearchableDropdownController<T> controller;
 
   final WidgetBuilder? emptyBuilder;
+  final Widget? header;
 
   final WidgetBuilder? loadingBuilder;
 
@@ -44,6 +45,8 @@ class DropdownBottomSheet<T> extends StatefulWidget {
   /// null and [Navigator.pop] is used. For [DropdownMode.overlay] the parent
   /// passes [_overlay.hide] so the page is never accidentally popped.
   final VoidCallback? onClose;
+
+  final bool defaultHeader;
 
   const DropdownBottomSheet({
     super.key,
@@ -54,6 +57,8 @@ class DropdownBottomSheet<T> extends StatefulWidget {
     required this.style,
     required this.behavior,
     required this.controller,
+    this.header,
+    this.defaultHeader = true,
     this.compareFn,
     this.itemBuilder,
     this.asyncItems,
@@ -150,7 +155,9 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(widget.style.borderRadius)),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
+          if (widget.defaultHeader) ...[  
           const SizedBox(height: 12),
 
           Container(
@@ -165,8 +172,10 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text('Select Item', style: widget.style.titleStyle ?? theme.textTheme.titleMedium),
           ),
-
-          const SizedBox(height: 16),
+          ],
+          if(widget.header != null) ...[
+            widget.header!,
+          ],
 
           if (widget.behavior.enableSearch)
             Padding(
@@ -181,11 +190,13 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
               ),
             ),
 
-          const SizedBox(height: 12),
+          if(widget.defaultHeader)...[
+            const SizedBox(height: 12),
 
           Divider(height: 1, color: theme.colorScheme.outlineVariant),
+          ],
 
-          Expanded(
+          Flexible(
             child: ValueListenableBuilder<DropdownState<T>>(
               valueListenable: widget.controller.stateNotifier,
               builder: (context, state, _) {
@@ -206,7 +217,7 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
             ),
           ),
 
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 12),
+          //SizedBox(height: MediaQuery.of(context).padding.bottom + 12),
         ],
       ),
     );

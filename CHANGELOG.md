@@ -5,6 +5,12 @@ All notable changes to `custom_dropdown_pro` will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## 0.0.7 — 2026-06-11
+- **[FEAT] Header support** — Added custom `header` widget support and `defaultHeader` toggle to `SearchableDropdownField` for bottom-sheet and dialog modes.
+- **[FEAT] Dynamic overlay width** — Adjusted dropdown overlay width to dynamically match the triggering field's width instead of using a hardcoded `320`.
+- **[FIX] Bottom-sheet layout** — Improved bottom-sheet height behavior by using `Flexible` and `shrinkWrap: true` to prevent layout issues when headers are custom/varying.
+
 ## 0.0.6 — 2026-05-21
 - **[FEAT] Documentation & Quality bump** — 100% of exported public API elements now fully documented to satisfy pub.dev publishing guidelines.
 - **[FIX] Lint improvements** — Enabled `public_member_api_docs` lint across the package and verified clean analysis.

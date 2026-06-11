@@ -15,8 +15,12 @@ class DropdownOverlay {
 
     _overlayEntry = OverlayEntry(
       builder: (_) {
+        final renderBox =
+    context.findRenderObject() as RenderBox;
+
+final fieldWidth = renderBox.size.width;
         return Positioned(
-          width: 320,
+          width: fieldWidth,
           child: CompositedTransformFollower(
             link: layerLink,
             offset: const Offset(

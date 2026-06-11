@@ -302,6 +302,13 @@ class _OverlayExampleState extends State<OverlayExample> {
           children: [
             SearchableDropdownField<Country>(
               hintText: 'Select Country',
+              behavior: const DropdownBehavior(
+                // By default, the sheet closes immediately after picking an item.
+                // In overlay mode, we usually want to keep it open so the user
+                // can pick multiple items quickly. Set closeOnSelect to false.
+                closeOnSelect: false,
+                enableSearch: false, // Search is usually not needed in overlay mode.
+              ),
               items: _countries,
               itemLabel: (country) => country.name,
               textController: _textController,

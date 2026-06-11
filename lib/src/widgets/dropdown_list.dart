@@ -76,7 +76,9 @@ class DropdownList<T> extends StatelessWidget {
     }
 
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: items.length,
+      padding: style.contentPadding,
       itemBuilder: (_, index) {
         final item = items[index];
 

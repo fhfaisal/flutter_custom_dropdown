@@ -68,6 +68,17 @@ class SearchableDropdownField<T> extends StatefulWidget {
   /// Controller holding the selected label text displayed in the field.
   final TextEditingController textController;
 
+  /// Header widget shown above the search field and item list in the dropdown.
+  /// Only used for [DropdownMode.bottomSheet] and [DropdownMode.dialog].
+  /// For [DropdownMode.overlay] the parent can include a header in the child
+  /// widget passed to the controller.
+  /// This is separate from the [DropdownStyle.titleStyle] which is meant for
+  /// styling text inside the dropdown content, not a header outside the search field.
+  final Widget? header;
+
+  /// Whether to show a default header with the title "Select Item". Only used if [header] is not provided. This is useful for [DropdownMode.overlay] where the parent can not include a header in the child widget passed to the controller.
+  final bool defaultHeader;
+
   /// Creates a searchable dropdown field.
   const SearchableDropdownField({
     super.key,
@@ -76,6 +87,8 @@ class SearchableDropdownField<T> extends StatefulWidget {
     required this.onSelected,
     required this.hintText,
     required this.textController,
+    this.header,
+    this.defaultHeader = true,
     this.selectedItem,
     this.compareFn,
     this.itemBuilder,
@@ -139,6 +152,8 @@ class _SearchableDropdownFieldState<T>
 
   Widget _buildDropdownContent({VoidCallback? onClose}) {
     return DropdownBottomSheet<T>(
+      header: widget.header,
+      defaultHeader: widget.defaultHeader,
       items: widget.items,
       selectedItem: widget.selectedItem,
       itemLabel: widget.itemLabel,
