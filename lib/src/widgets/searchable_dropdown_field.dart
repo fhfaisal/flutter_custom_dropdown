@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/dropdown_behavior.dart';
 import '../core/dropdown_controller.dart';
 import '../core/dropdown_mode.dart';
+import '../core/dropdown_sheet_size.dart';
 import '../core/dropdown_style.dart';
 import '../core/typedefs.dart';
 import 'dropdown_bottom_sheet.dart';
@@ -79,6 +80,15 @@ class SearchableDropdownField<T> extends StatefulWidget {
   /// Whether to show a default header with the title "Select Item". Only used if [header] is not provided. This is useful for [DropdownMode.overlay] where the parent can not include a header in the child widget passed to the controller.
   final bool defaultHeader;
 
+  /// Text shown in the default header, e.g. the field's name. Defaults to
+  /// `'Select Item'`. Only used when [defaultHeader] is true.
+  final String? title;
+
+  /// Sizing for [DropdownMode.bottomSheet]. The default sizes the sheet to
+  /// its content; see [DropdownSheetSize] for a fixed, scroll-expandable
+  /// sheet. Ignored by the other modes.
+  final DropdownSheetSize sheetSize;
+
   /// Creates a searchable dropdown field.
   const SearchableDropdownField({
     super.key,
@@ -89,6 +99,8 @@ class SearchableDropdownField<T> extends StatefulWidget {
     required this.textController,
     this.header,
     this.defaultHeader = true,
+    this.title,
+    this.sheetSize = const DropdownSheetSize(),
     this.selectedItem,
     this.compareFn,
     this.itemBuilder,
@@ -150,10 +162,15 @@ class _SearchableDropdownFieldState<T>
     setState(() {});
   }
 
-  Widget _buildDropdownContent({VoidCallback? onClose}) {
+  Widget _buildDropdownContent({
+    VoidCallback? onClose,
+    ScrollController? scrollController,
+  }) {
     return DropdownBottomSheet<T>(
       header: widget.header,
       defaultHeader: widget.defaultHeader,
+      title: widget.title ?? 'Select Item',
+      scrollController: scrollController,
       items: widget.items,
       selectedItem: widget.selectedItem,
       itemLabel: widget.itemLabel,
@@ -188,7 +205,10 @@ class _SearchableDropdownFieldState<T>
           isScrollControlled: true,
           useSafeArea: true,
           backgroundColor: Colors.transparent,
-          builder: (_) => _buildDropdownContent(),
+          // The sheet draws its own handle on a transparent background, so a
+          // host theme's `showDragHandle: true` must not add a second one.
+          showDragHandle: false,
+          builder: (sheetContext) => _buildBottomSheet(sheetContext),
         );
 
       case DropdownMode.dialog:
@@ -210,6 +230,27 @@ class _SearchableDropdownFieldState<T>
           ),
         );
     }
+  }
+
+  Widget _buildBottomSheet(BuildContext sheetContext) {
+    final size = widget.sheetSize;
+    if (!size.isDraggable) return _buildDropdownContent();
+
+    // Keeps the list above the keyboard while the search field has focus.
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+      ),
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: size.initialChildSize!,
+        minChildSize: size.initialChildSize!,
+        maxChildSize: size.maxChildSize,
+        snap: size.snap,
+        builder: (_, scrollController) =>
+            _buildDropdownContent(scrollController: scrollController),
+      ),
+    );
   }
 
   void _closeDropdown() {

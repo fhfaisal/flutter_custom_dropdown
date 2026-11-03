@@ -9,6 +9,7 @@ Supports **BottomSheet**, **Dialog**, and **Overlay** presentation modes, async 
 
 -  **Built-in search** with 300 ms debounce
 -  **Three display modes** — BottomSheet, Dialog, Overlay
+-  **Scroll-expandable bottom sheet** — opens at a fixed height and grows as the list scrolls
 -  **Fully generic** `<T>` — use any model class, not just strings
 -  **Async items** — load from API / database on every keystroke
 -  **Custom item builder** — replace the default tile with any widget
@@ -26,7 +27,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  custom_dropdown_pro: ^0.0.4
+  custom_dropdown_pro: ^0.0.8
 ```
 
 Then run:
@@ -266,6 +267,7 @@ SearchableDropdownField(
     closeOnSelect: true,     // close sheet after picking an item (default: true)
     autofocusSearch: true,   // auto-focus the search field on open (default: true)
     enableAnimations: true,  // animate list changes (default: true)
+    showCloseButton: true,   // show ✕ at the end of the sheet header (default: true)
   ),
   ...
 )
@@ -289,6 +291,20 @@ SearchableDropdownField(
 )
 ```
 
+### Sheet title and size
+
+```dart
+SearchableDropdownField(
+  title: 'Country', // header text (default: 'Select Item')
+  // Opens at 60% of the screen whatever the item count, grows to 90% as
+  // the list is scrolled, and snaps back to 60%. Bottom-sheet mode only.
+  sheetSize: const DropdownSheetSize(initialChildSize: 0.6, maxChildSize: 0.9),
+  ...
+)
+```
+
+Leave `sheetSize` unset to keep the default content-sized sheet (capped at 85% of the screen).
+
 ---
 
 ## API Reference
@@ -302,6 +318,10 @@ SearchableDropdownField(
 | `onSelected` | `void Function(T)` | ✅ | Called when user selects an item |
 | `hintText` | `String` | ✅ | Placeholder text for the field |
 | `textController` | `TextEditingController` | ✅ | Drives the visible text field |
+| `title` | `String?` | | Sheet header text (default: `'Select Item'`) |
+| `sheetSize` | `DropdownSheetSize` | | Bottom-sheet sizing (default: content-sized) |
+| `header` | `Widget?` | | Custom header above the search field |
+| `defaultHeader` | `bool` | | Show the built-in handle + title header (default: `true`) |
 | `selectedItem` | `T?` | | Pre-selected item on first render |
 | `compareFn` | `bool Function(T, T)?` | | Equality check for custom objects |
 | `itemBuilder` | `Widget Function(context, T, bool)?` | | Custom item tile builder |

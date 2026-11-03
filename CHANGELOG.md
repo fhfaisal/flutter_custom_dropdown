@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## 0.0.8 — 2026-11-03
+- **[FEAT] Sheet title** — Added `title` to `SearchableDropdownField` so the default header can show the field's name. It still falls back to `'Select Item'`.
+- **[FEAT] Close button** — The default header now shows a close (✕) button at its end. Turn it off with `DropdownBehavior(showCloseButton: false)`.
+- **[FEAT] Scroll-expandable bottom sheet** — Added `sheetSize: DropdownSheetSize(initialChildSize: 0.6, maxChildSize: 0.9)`. The sheet opens at a fixed height whatever the item count, grows up to `maxChildSize` when the list is scrolled, and never shrinks below `initialChildSize`. It also stays above the keyboard. The default (`DropdownSheetSize()`) keeps the content-sized sheet.
+- **[CHANGE] Header layout** — The default header title is now start-aligned (it was centered).
+- **[FIX] Duplicate drag handle** — The bottom sheet no longer gets a second drag handle when the host theme sets `BottomSheetThemeData.showDragHandle: true`.
+
 ## 0.0.7 — 2026-06-11
 - **[FEAT] Header support** — Added custom `header` widget support and `defaultHeader` toggle to `SearchableDropdownField` for bottom-sheet and dialog modes.
 - **[FEAT] Dynamic overlay width** — Adjusted dropdown overlay width to dynamically match the triggering field's width instead of using a hardcoded `320`.

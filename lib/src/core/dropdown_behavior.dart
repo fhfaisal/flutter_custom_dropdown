@@ -15,6 +15,10 @@ class DropdownBehavior {
   /// Whether built-in animations are enabled for the dropdown UI.
   final bool enableAnimations;
 
+  /// Whether the default header shows a close (x) button at its end.
+  /// Only used when the dropdown's default header is shown.
+  final bool showCloseButton;
+
   /// Creates a set of behavior flags for the dropdown.
   const DropdownBehavior({
     this.enableSearch = true,
@@ -22,5 +26,6 @@ class DropdownBehavior {
     this.clearable = true,
     this.autofocusSearch = true,
     this.enableAnimations = true,
+    this.showCloseButton = true,
   });
 }

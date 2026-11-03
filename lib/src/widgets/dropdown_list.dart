@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-
 import '../core/dropdown_behavior.dart';
 import '../core/dropdown_style.dart';
 import '../core/typedefs.dart';
@@ -33,6 +32,10 @@ class DropdownList<T> extends StatelessWidget {
 
   final WidgetBuilder? loadingBuilder;
 
+  /// When set, the list scrolls with this controller and fills its parent
+  /// instead of shrink-wrapping -- used by the scroll-expandable bottom sheet.
+  final ScrollController? scrollController;
+
   const DropdownList({
     super.key,
     required this.items,
@@ -46,6 +49,7 @@ class DropdownList<T> extends StatelessWidget {
     this.itemBuilder,
     this.emptyBuilder,
     this.loadingBuilder,
+    this.scrollController,
   });
 
   bool _isSelected(T item) {
@@ -54,10 +58,7 @@ class DropdownList<T> extends StatelessWidget {
     }
 
     if (compareFn != null) {
-      return compareFn!(
-        item,
-        selectedItem as T,
-      );
+      return compareFn!(item, selectedItem as T);
     }
 
     return item == selectedItem;
@@ -66,17 +67,16 @@ class DropdownList<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return loadingBuilder?.call(context) ??
-          const DropdownLoading();
+      return loadingBuilder?.call(context) ?? const DropdownLoading();
     }
 
     if (items.isEmpty) {
-      return emptyBuilder?.call(context) ??
-          const DropdownEmpty();
+      return emptyBuilder?.call(context) ?? const DropdownEmpty();
     }
 
     return ListView.builder(
-      shrinkWrap: true,
+      controller: scrollController,
+      shrinkWrap: scrollController == null,
       itemCount: items.length,
       padding: style.contentPadding,
       itemBuilder: (_, index) {
@@ -89,11 +89,7 @@ class DropdownList<T> extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () => onItemSelected(item),
-              child: itemBuilder!(
-                context,
-                item,
-                selected,
-              ),
+              child: itemBuilder!(context, item, selected),
             ),
           );
         }

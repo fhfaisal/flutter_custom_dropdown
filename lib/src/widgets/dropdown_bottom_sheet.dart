@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-
 import '../core/debounce.dart';
 import '../core/dropdown_behavior.dart';
 import '../core/dropdown_controller.dart';
 import '../core/dropdown_search_service.dart';
+import '../core/dropdown_sheet_size.dart';
 import '../core/dropdown_state.dart';
 import '../core/dropdown_style.dart';
 import '../core/typedefs.dart';
@@ -48,6 +48,14 @@ class DropdownBottomSheet<T> extends StatefulWidget {
 
   final bool defaultHeader;
 
+  /// Text shown in the default header.
+  final String title;
+
+  /// When set, the item list scrolls with this controller and fills the
+  /// remaining height -- passed by the scroll-expandable bottom sheet (see
+  /// [DropdownSheetSize]) so scrolling the list grows the sheet.
+  final ScrollController? scrollController;
+
   const DropdownBottomSheet({
     super.key,
     required this.items,
@@ -59,6 +67,8 @@ class DropdownBottomSheet<T> extends StatefulWidget {
     required this.controller,
     this.header,
     this.defaultHeader = true,
+    this.title = 'Select Item',
+    this.scrollController,
     this.compareFn,
     this.itemBuilder,
     this.asyncItems,
@@ -120,7 +130,11 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
         return;
       }
 
-      final filtered = _searchService.filter(items: widget.items, query: query, mapper: widget.itemLabel);
+      final filtered = _searchService.filter(
+        items: widget.items,
+        query: query,
+        mapper: widget.itemLabel,
+      );
 
       widget.controller.updateItems(filtered);
     });
@@ -132,13 +146,17 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
     widget.onSelected(item);
 
     if (widget.behavior.closeOnSelect) {
-      // Use the provided onClose callback when available (e.g. overlay mode).
-      // Fall back to Navigator.pop for bottomSheet / dialog modes.
-      if (widget.onClose != null) {
-        widget.onClose!.call();
-      } else {
-        Navigator.pop(context);
-      }
+      _close();
+    }
+  }
+
+  void _close() {
+    // Use the provided onClose callback when available (e.g. overlay mode).
+    // Fall back to Navigator.pop for bottomSheet / dialog modes.
+    if (widget.onClose != null) {
+      widget.onClose!.call();
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -146,36 +164,69 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // The scroll-expandable sheet gets its height from the enclosing
+    // DraggableScrollableSheet; only the content-sized sheet needs a cap.
+    final fillsParent = widget.scrollController != null;
+
     final maxHeight = MediaQuery.of(context).size.height * 0.85;
 
     return Container(
-      constraints: BoxConstraints(maxHeight: maxHeight),
+      constraints: fillsParent ? null : BoxConstraints(maxHeight: maxHeight),
       decoration: BoxDecoration(
         color: widget.style.backgroundColor ?? theme.scaffoldBackgroundColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(widget.style.borderRadius)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(widget.style.borderRadius),
+        ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: fillsParent ? MainAxisSize.max : MainAxisSize.min,
         children: [
-          if (widget.defaultHeader) ...[  
-          const SizedBox(height: 12),
+          if (widget.defaultHeader) ...[
+            const SizedBox(height: 12),
 
-          Container(
-            width: 42,
-            height: 5,
-            decoration: BoxDecoration(color: theme.colorScheme.outlineVariant, borderRadius: BorderRadius.circular(20)),
-          ),
+            Container(
+              width: 42,
+              height: 5,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.outlineVariant,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
 
-          const SizedBox(height: 16),
+            SizedBox(height: widget.behavior.showCloseButton ? 4 : 16),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Select Item', style: widget.style.titleStyle ?? theme.textTheme.titleMedium),
-          ),
+            Padding(
+              padding: EdgeInsetsDirectional.only(
+                start: 16,
+                end: widget.behavior.showCloseButton ? 4 : 16,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      style:
+                          widget.style.titleStyle ??
+                          theme.textTheme.titleMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (widget.behavior.showCloseButton)
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      tooltip: MaterialLocalizations.of(
+                        context,
+                      ).closeButtonTooltip,
+                      onPressed: _close,
+                    ),
+                ],
+              ),
+            ),
+
+            if (widget.behavior.showCloseButton) const SizedBox(height: 4),
           ],
-          if(widget.header != null) ...[
-            widget.header!,
-          ],
+          if (widget.header != null) ...[widget.header!],
 
           if (widget.behavior.enableSearch)
             Padding(
@@ -190,13 +241,14 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
               ),
             ),
 
-          if(widget.defaultHeader)...[
+          if (widget.defaultHeader) ...[
             const SizedBox(height: 12),
 
-          Divider(height: 1, color: theme.colorScheme.outlineVariant),
+            Divider(height: 1, color: theme.colorScheme.outlineVariant),
           ],
 
           Flexible(
+            fit: fillsParent ? FlexFit.tight : FlexFit.loose,
             child: ValueListenableBuilder<DropdownState<T>>(
               valueListenable: widget.controller.stateNotifier,
               builder: (context, state, _) {
@@ -212,6 +264,7 @@ class _DropdownBottomSheetState<T> extends State<DropdownBottomSheet<T>> {
                   loading: state.loading,
                   emptyBuilder: widget.emptyBuilder,
                   loadingBuilder: widget.loadingBuilder,
+                  scrollController: widget.scrollController,
                 );
               },
             ),

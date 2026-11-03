@@ -189,6 +189,13 @@ class _BasicExampleState extends State<BasicExample> {
           children: [
             SearchableDropdownField<Country>(
               hintText: 'Select Country',
+              // Text shown in the sheet header (default: 'Select Item').
+              title: 'Country',
+              // Open at 60% of the screen and grow to 90% as the list scrolls.
+              sheetSize: const DropdownSheetSize(
+                initialChildSize: 0.6,
+                maxChildSize: 0.9,
+              ),
               // The list of items to show inside the dropdown.
               items: _countries,
               // itemLabel controls what appears in the field text AND what the
