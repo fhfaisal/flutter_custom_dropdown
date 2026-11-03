@@ -247,6 +247,12 @@ class _SearchableDropdownFieldState<T>
         minChildSize: size.initialChildSize!,
         maxChildSize: size.maxChildSize,
         snap: size.snap,
+        snapSizes: size.snapSizes,
+        snapAnimationDuration: size.snapAnimationDuration,
+        // The modal sheet pops itself when a DraggableScrollableSheet reaches
+        // its min size; min == initial here, so without this the sheet would
+        // close every time it comes back down from an expanded size.
+        shouldCloseOnMinExtent: false,
         builder: (_, scrollController) =>
             _buildDropdownContent(scrollController: scrollController),
       ),

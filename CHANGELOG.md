@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## 0.0.9 — 2026-11-03
+- **[FIX] Sheet closing at its initial size** — A scroll-expandable sheet (`sheetSize` with `initialChildSize`) no longer closes when it comes back down from an expanded size to `initialChildSize`. It now stays open there.
+- **[FEAT] Custom snap stops** — `DropdownSheetSize.snapSizes` adds stops between `initialChildSize` and `maxChildSize`, e.g. `snapSizes: [0.75]`. `snapAnimationDuration` sets how long the snap animation takes.
+
 ## 0.0.8 — 2026-11-03
 - **[FEAT] Sheet title** — Added `title` to `SearchableDropdownField` so the default header can show the field's name. It still falls back to `'Select Item'`.
 - **[FEAT] Close button** — The default header now shows a close (✕) button at its end. Turn it off with `DropdownBehavior(showCloseButton: false)`.

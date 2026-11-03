@@ -193,6 +193,53 @@ void main() {
       expect(_sheetHeight(tester), closeTo(_screen.height * 0.6, 0.5));
     });
 
+    testWidgets('coming back down to initialChildSize keeps the sheet open', (
+      tester,
+    ) async {
+      await _pump(tester, items: _items(40), sheetSize: fixed);
+      await _open(tester);
+
+      await tester.drag(find.text('Item 3'), const Offset(0, -400));
+      await tester.pumpAndSettle();
+      expect(_sheetHeight(tester), closeTo(_screen.height * 0.9, 0.5));
+
+      await tester.drag(find.text('Item 3'), const Offset(0, 400));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BottomSheet), findsOneWidget);
+      expect(_sheetHeight(tester), closeTo(_screen.height * 0.6, 0.5));
+    });
+
+    testWidgets('without snapSizes a short drag settles back at initial', (
+      tester,
+    ) async {
+      await _pump(tester, items: _items(40), sheetSize: fixed);
+      await _open(tester);
+
+      await tester.drag(find.text('Item 3'), const Offset(0, -140));
+      await tester.pumpAndSettle();
+
+      expect(_sheetHeight(tester), closeTo(_screen.height * 0.6, 0.5));
+    });
+
+    testWidgets('snapSizes adds stops between initial and max', (tester) async {
+      await _pump(
+        tester,
+        items: _items(40),
+        sheetSize: const DropdownSheetSize(
+          initialChildSize: 0.6,
+          maxChildSize: 0.9,
+          snapSizes: [0.75],
+        ),
+      );
+      await _open(tester);
+
+      await tester.drag(find.text('Item 3'), const Offset(0, -140));
+      await tester.pumpAndSettle();
+
+      expect(_sheetHeight(tester), closeTo(_screen.height * 0.75, 0.5));
+    });
+
     testWidgets('selecting an item still writes its label and closes', (
       tester,
     ) async {

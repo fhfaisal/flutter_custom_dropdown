@@ -27,7 +27,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  custom_dropdown_pro: ^0.0.8
+  custom_dropdown_pro: ^0.0.9
 ```
 
 Then run:
@@ -302,6 +302,19 @@ SearchableDropdownField(
   ...
 )
 ```
+
+Add more stops between the initial and maximum sizes with `snapSizes`. They must be in ascending order, and between `initialChildSize` and `maxChildSize`:
+
+```dart
+sheetSize: const DropdownSheetSize(
+  initialChildSize: 0.6,
+  maxChildSize: 0.9,
+  snapSizes: [0.75],                                      // stops at 60%, 75%, 90%
+  snapAnimationDuration: Duration(milliseconds: 200),     // optional
+),
+```
+
+Set `snap: false` to let the sheet rest at any height between the two.
 
 Leave `sheetSize` unset to keep the default content-sized sheet (capped at 85% of the screen).
 
